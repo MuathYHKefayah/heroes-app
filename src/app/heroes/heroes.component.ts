@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Hero } from '../hero';
-import { HEROES } from '../mock-heroes';
+import { HeroService } from '../hero.service';
+import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-heroes',
@@ -9,16 +10,22 @@ import { HEROES } from '../mock-heroes';
 })
 export class HeroesComponent implements OnInit {
   selectedHero: Hero;
-  heroes = HEROES;
+  heroes: Hero[];
 
-  onSelect(hero: Hero): void{
-    this.selectedHero = hero;
-  }
-
-  constructor() { }
+  constructor(private heroService: HeroService, private messageService: MessageService) { }
 
   ngOnInit(): void {
-    
+    this.getHeroes();
+  }
+
+  getHeroes(): void {
+    //this.heroes = this.heroService.getHeroes();  //syncrounce approach this work when request mock data
+    this.heroService.getHeroes().subscribe(heroes => this.heroes = heroes); // asyncrounce approach thats better when requets heroes from the sevrer
+  }
+
+  onSelect(hero: Hero): void {
+    this.selectedHero = hero;
+    this.messageService.add(`HeroesComponent: Selected hero id=${hero.id}`);
   }
 
 }
