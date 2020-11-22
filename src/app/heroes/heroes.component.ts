@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
 import { MessageService } from '../message.service';
@@ -8,7 +8,7 @@ import { MessageService } from '../message.service';
   templateUrl: './heroes.component.html',
   styleUrls: ['./heroes.component.css']
 })
-export class HeroesComponent implements OnInit {
+export class HeroesComponent implements OnInit, OnDestroy {
   selectedHero: Hero;
   heroes: Hero[];
 
@@ -16,6 +16,9 @@ export class HeroesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getHeroes();
+  }
+  ngOnDestroy(): void {
+    console.log("Destroy Hero ...");
   }
 
   getHeroes(): void {
